@@ -1,4 +1,6 @@
+import { STORAGE_KEYS } from "@/constants/StorageKeys";
 import { env } from "@/env";
+import { clearCookie } from "@/utils/cookie";
 import axios from "axios";
 
 export const http = axios.create({
@@ -19,6 +21,7 @@ http.interceptors.response.use(
       error.response.status === 401 &&
       !window.location.pathname.includes("/sign-in")
     ) {
+      clearCookie(STORAGE_KEYS.AUTH);
       window.location.href = "/sign-in";
     }
     return Promise.reject(error);
