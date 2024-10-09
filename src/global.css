@@ -67,3 +67,8 @@
     @apply bg-background bg-zinc-100;
   }
 }
+
+button:focus {
+  --tw-ring-shadow: none !important;
+  --tw-ring-offset-shadow: none !important;
+}
