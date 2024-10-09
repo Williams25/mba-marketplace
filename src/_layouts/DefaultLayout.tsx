@@ -27,7 +27,7 @@ export const DefaultLayout = () => {
               <ChartNoAxesCombined className="w-5 h-5" />
               Dashboard
             </NavLink>
-            <NavLink to={"/orders"}>
+            <NavLink to={DEFAULT_ROUTES.PRIVATE.PRODUCTS}>
               <ShoppingBag className="w-5 h-5" />
               Produtos
             </NavLink>
