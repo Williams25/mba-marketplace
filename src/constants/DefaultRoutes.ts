@@ -4,6 +4,7 @@ export const DEFAULT_ROUTES = {
     SIGN_UP: "/sign-up"
   },
   PRIVATE: {
-    HOME: "/"
+    HOME: "/",
+    PRODUCTS: "/products"
   }
 };
