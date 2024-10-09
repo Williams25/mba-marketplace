@@ -41,10 +41,18 @@ export const UserSettings = () => {
       <DropdownMenu>
         <DropdownMenuTrigger className="outline-none">
           {!isFetching || !isLoading ? (
-            <img
-              src={profile?.seller?.avatar.url}
-              className="w-9 h-9 rounded-full object-cover"
-            />
+            <>
+              {profile?.seller?.avatar ? (
+                <img
+                  src={profile?.seller?.avatar?.url}
+                  className="w-9 h-9 min-w-9 min-h-9 rounded-full object-cover"
+                />
+              ) : (
+                <span className="text-2xl bg-orange-500 font-semibold text-white w-9 h-9 min-w-9 min-h-9  rounded-full object-cover flex items-center justify-center">
+                  {profile?.seller?.name?.split("")[0]}
+                </span>
+              )}
+            </>
           ) : (
             <Skeleton className="w-9 h-9 rounded-full" />
           )}
