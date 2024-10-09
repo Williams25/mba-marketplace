@@ -25,10 +25,18 @@ export const StoreProfileDialog = () => {
 
       <div className="flex gap-6 items-start">
         {cached ? (
-          <img
-            src={cached?.seller.avatar.url}
-            className="w-28 h-28 rounded-full object-cover"
-          />
+          <>
+            {cached?.seller?.avatar ? (
+              <img
+                src={cached?.seller?.avatar?.url}
+                className="w-28 h-28 min-w-28 min-h-28 rounded-full object-cover"
+              />
+            ) : (
+              <span className="text-5xl bg-orange-500 font-semibold text-white w-28 h-28 min-w-28 min-h-28  rounded-full object-cover flex items-center justify-center">
+                {cached?.seller?.name?.split("")[0]}
+              </span>
+            )}
+          </>
         ) : (
           <Skeleton className="w-28 h-28 min-w-28 min-h-28 rounded-full" />
         )}
