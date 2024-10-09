@@ -8,6 +8,7 @@ import { DEFAULT_ROUTES } from "./constants/DefaultRoutes";
 import { NotFound } from "./pages/404";
 import { Error } from "./pages/Error";
 import { Dashboard } from "./pages/dashboard/Dashboard";
+import { Products } from "./pages/dashboard/Products";
 
 export const routes: RouteObject[] = [
   {
@@ -18,6 +19,10 @@ export const routes: RouteObject[] = [
       {
         path: DEFAULT_ROUTES.PRIVATE.HOME,
         element: <Dashboard />
+      },
+      {
+        path: DEFAULT_ROUTES.PRIVATE.PRODUCTS,
+        element: <Products />
       }
     ]
   },
