@@ -43,7 +43,9 @@ export const productsService = {
     return data?.product;
   },
   createProduct: async (params: IFormProductData) => {
-    const attachmentsIds: string[] = [...(params.attachmentsIds || [])];
+    const attachmentsIds: string[] = params.file
+      ? []
+      : [...(params.attachmentsIds?.map(({ id }) => id) || [])];
     if (params.file) {
       const uploadedFiles = await attachmentsService.upload([params.file]);
       const uploadedFile = uploadedFiles?.attachments[0]?.id || null;
@@ -57,25 +59,24 @@ export const productsService = {
     return data.product;
   },
   editProduct: async (params: IFormProductData) => {
-    const attachmentsIds: string[] = [...(params.attachmentsIds || [])];
+    const attachmentsIds: string[] = params.file
+      ? []
+      : [...(params.attachmentsIds?.map(({ id }) => id) || [])];
     if (params.file) {
       const uploadedFiles = await attachmentsService.upload([params.file]);
       const uploadedFile = uploadedFiles?.attachments[0]?.id || null;
       uploadedFile && attachmentsIds.push(uploadedFile);
     }
-    const { data } = await http.post<IProductDetails>(
-      `/products/${params.id}`,
-      {
-        ...params,
-        attachmentsIds
-      }
-    );
+    const { data } = await http.put<IProductDetails>(`/products/${params.id}`, {
+      ...params,
+      attachmentsIds
+    });
 
     return data.product;
   },
   updateStatus: async (params: IUpdateStatusProduct) => {
     const { data } = await http.patch<IProductDetails>(
-      `/products/${params.id}`,
+      `/products/${params.id}/available`,
       {
         ...params
       }
