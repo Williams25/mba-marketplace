@@ -48,7 +48,7 @@ export const UserSettings = () => {
                   className="w-9 h-9 min-w-9 min-h-9 rounded-full object-cover"
                 />
               ) : (
-                <span className="text-2xl bg-orange-500 font-semibold text-white w-9 h-9 min-w-9 min-h-9  rounded-full object-cover flex items-center justify-center">
+                <span className="text-2xl bg-gray-700 font-semibold text-white w-9 h-9 min-w-9 min-h-9  rounded-full object-cover flex items-center justify-center">
                   {profile?.seller?.name?.split("")[0]}
                 </span>
               )}
