@@ -1,4 +1,4 @@
-import { currencyMask, maskNumbers } from "@/utils/masks";
+import { currencyMask } from "@/utils/masks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -19,15 +19,35 @@ import {
   IProductStatus,
   IProductTranslate
 } from "@/types/products";
+import { parsePriceMultipliedOneHundred } from "@/utils/currencyUtils";
+import { useNavigate } from "react-router-dom";
+import { DEFAULT_ROUTES } from "@/constants/DefaultRoutes";
+import { ERRORS_MESSAGES } from "@/constants/ErrorsMessages";
 
 const schema = z.object({
   id: z.string().nullish(),
   file: z.instanceof(File).nullish(),
-  attachmentsIds: z.string().array().optional(),
-  title: z.string(),
-  categoryId: z.string(),
-  description: z.string(),
-  priceInCents: z.string().transform((value) => Number(maskNumbers(value)))
+  attachmentsIds: z
+    .array(
+      z.object({
+        id: z.string(),
+        url: z.string()
+      })
+    )
+    .optional(),
+  title: z
+    .string({ message: ERRORS_MESSAGES.REQUIRED_FIELD })
+    .min(1, { message: ERRORS_MESSAGES.REQUIRED_FIELD }),
+  categoryId: z
+    .string({ message: ERRORS_MESSAGES.REQUIRED_FIELD })
+    .min(1, { message: ERRORS_MESSAGES.REQUIRED_FIELD }),
+  description: z
+    .string({ message: ERRORS_MESSAGES.REQUIRED_FIELD })
+    .min(1, { message: ERRORS_MESSAGES.REQUIRED_FIELD }),
+  priceInCents: z
+    .string({ message: ERRORS_MESSAGES.REQUIRED_FIELD })
+    .min(1, { message: ERRORS_MESSAGES.REQUIRED_FIELD })
+    .transform((value) => parsePriceMultipliedOneHundred(value))
 });
 
 export type IFormProductData = z.infer<typeof schema>;
@@ -49,9 +69,11 @@ export interface IFormProductProps {
 }
 
 export const FormProduct = ({ defaultValues, status }: IFormProductProps) => {
+  const navigate = useNavigate();
+
   const methods = useForm<IFormProductData>({
-    resolver: zodResolver(schema),
-    values: defaultValues || initialValuesForm
+    defaultValues: defaultValues || initialValuesForm,
+    resolver: zodResolver(schema)
   });
 
   const { mutateAsync, isPending } = useMutation({
@@ -67,6 +89,9 @@ export const FormProduct = ({ defaultValues, status }: IFormProductProps) => {
         `Produto ${response.title.toUpperCase()} salvo com sucesso!`
       );
       methods.reset({ ...initialValuesForm });
+      navigate(
+        DEFAULT_ROUTES.PRIVATE.PRODUCT_DETAILS.replace(":id", response.id)
+      );
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
 
@@ -90,6 +115,8 @@ export const FormProduct = ({ defaultValues, status }: IFormProductProps) => {
     }
   });
 
+  const attachmentsIdsWatched = methods.watch("attachmentsIds");
+
   return (
     <FormProviderCustom
       methods={methods}
@@ -100,6 +127,7 @@ export const FormProduct = ({ defaultValues, status }: IFormProductProps) => {
         id="file"
         className="mb-4"
         classNameLabel="max-w-[415px] max-h-[340px] min-h-[340px] min-w-[415px]"
+        image={attachmentsIdsWatched ? attachmentsIdsWatched[0]?.url : null}
       />
 
       <div className="bg-white px-6 py-8 rounded-md">
@@ -153,6 +181,16 @@ export const FormProduct = ({ defaultValues, status }: IFormProductProps) => {
             className="w-full"
             variant={"outline"}
             disabled={isPending || isLoadingCategories}
+            onClick={() =>
+              navigate(
+                defaultValues?.id
+                  ? DEFAULT_ROUTES.PRIVATE.PRODUCT_DETAILS.replace(
+                      ":id",
+                      defaultValues.id
+                    )
+                  : DEFAULT_ROUTES.PRIVATE.PRODUCTS
+              )
+            }
           >
             Cancelar
           </Button>
