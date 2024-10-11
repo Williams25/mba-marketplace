@@ -19,7 +19,7 @@ export const DefaultLayout = () => {
 
   return (
     <>
-      <div className="border-2 border-b-gray-200 mb-12">
+      <div className="border-2 border-b-gray-200 mb-12 bg-white">
         <header className="py-5 px-6 max-w-[1720px] w-full mx-auto flex justify-between items-center gap-4">
           <img src={LogoHeaderImg} className="w-14 h-10" />
           <nav className="flex items-center space-x-4 lg:space-x-6">
