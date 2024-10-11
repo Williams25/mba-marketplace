@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { Label } from "./ui/label";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ImageUp } from "lucide-react";
 import { Skeleton } from "./ui/skeleton";
 import { ControlFieldError } from "./ControlFieldError";
@@ -8,12 +8,14 @@ import { ControlFieldError } from "./ControlFieldError";
 export interface IAttachmentFileProps {
   id: string;
   className?: string;
+  classNameLabel?: string;
   error?: string;
 }
 
 export const AttachmentFile = ({
   id,
   className = "",
+  classNameLabel = "",
   error
 }: IAttachmentFileProps) => {
   const [filePreview, setFilePreview] = useState<string | null>(null);
@@ -37,6 +39,10 @@ export const AttachmentFile = ({
     setIsUploadingFile(false);
   };
 
+  useEffect(() => {
+    setFilePreview(null);
+  }, [methods.formState.isSubmitSuccessful]);
+
   return (
     <Controller
       control={methods.control}
@@ -46,7 +52,7 @@ export const AttachmentFile = ({
           <div className={className}>
             <Label
               htmlFor={id}
-              className="max-w-32 min-w-32 max-h-32 min-h-32 flex rounded-md justify-center items-center bg-[#F5EAEA] overflow-hidden cursor-pointer"
+              className={`max-w-32 min-w-32 max-h-32 min-h-32 flex rounded-md justify-center items-center bg-[#F5EAEA] overflow-hidden cursor-pointer ${classNameLabel}`}
             >
               <input
                 type="file"
@@ -65,7 +71,7 @@ export const AttachmentFile = ({
               {filePreview && !isUploadingFile && (
                 <img
                   src={filePreview || ""}
-                  className="object-cover min-w-32 min-h-32"
+                  className="object-cover w-full h-full"
                 />
               )}
 
