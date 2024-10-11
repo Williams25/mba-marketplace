@@ -34,9 +34,11 @@ export const DefaultLayout = () => {
           </nav>
 
           <div className="flex items-center space-x-4 lg:space-x-6">
-            <Button className="flex items-center gap-2 font-medium">
-              <Plus className="w-5 h-5" />
-              Novo Produto
+            <Button className="flex items-center gap-2 font-medium" asChild>
+              <NavLink to={DEFAULT_ROUTES.PRIVATE.PRODUCT_NEW}>
+                <Plus className="w-5 h-5" />
+                Novo Produto
+              </NavLink>
             </Button>
 
             <UserSettings />
