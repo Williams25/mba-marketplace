@@ -32,7 +32,7 @@ export const StoreProfileDialog = () => {
                 className="w-28 h-28 min-w-28 min-h-28 rounded-full object-cover"
               />
             ) : (
-              <span className="text-5xl bg-orange-500 font-semibold text-white w-28 h-28 min-w-28 min-h-28  rounded-full object-cover flex items-center justify-center">
+              <span className="text-5xl bg-gray-700 font-semibold text-white w-28 h-28 min-w-28 min-h-28  rounded-full object-cover flex items-center justify-center">
                 {cached?.seller?.name?.split("")[0]}
               </span>
             )}
