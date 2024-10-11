@@ -10,15 +10,17 @@ export interface IAttachmentFileProps {
   className?: string;
   classNameLabel?: string;
   error?: string;
+  image?: string | null;
 }
 
 export const AttachmentFile = ({
   id,
   className = "",
   classNameLabel = "",
-  error
+  error,
+  image
 }: IAttachmentFileProps) => {
-  const [filePreview, setFilePreview] = useState<string | null>(null);
+  const [filePreview, setFilePreview] = useState<string | null>(image || null);
   const [isUploadingFile, setIsUploadingFile] = useState<boolean>(false);
   const methods = useFormContext();
 
@@ -41,6 +43,10 @@ export const AttachmentFile = ({
 
   useEffect(() => {
     setFilePreview(null);
+    if (image) {
+      setFilePreview(image);
+      setIsUploadingFile(false);
+    }
   }, [methods.formState.isSubmitSuccessful]);
 
   return (
@@ -68,15 +74,17 @@ export const AttachmentFile = ({
                 <ImageUp className="w-8 h-8 text-orange-500" />
               )}
 
-              {filePreview && !isUploadingFile && (
+              {filePreview && !isUploadingFile ? (
                 <img
                   src={filePreview || ""}
-                  className="object-cover w-full h-full"
+                  className={`object-cover w-full h-full ${classNameLabel}`}
                 />
-              )}
+              ) : null}
 
               {isUploadingFile && (
-                <Skeleton className="min-w-32 min-h-32 bg-gray-300" />
+                <Skeleton
+                  className={`min-w-32 min-h-32 bg-gray-300 ${classNameLabel}`}
+                />
               )}
             </Label>
 
