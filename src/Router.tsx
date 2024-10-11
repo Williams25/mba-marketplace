@@ -10,6 +10,8 @@ import { Error } from "./pages/Error";
 import { Dashboard } from "./pages/dashboard/Dashboard";
 import { Products } from "./pages/dashboard/Products";
 import { NewProduct } from "./pages/dashboard/NewProduct";
+import { EditProduct } from "./pages/dashboard/EditProduct";
+import { DetailProduct } from "./pages/dashboard/DetailProduct";
 
 export const routes: RouteObject[] = [
   {
@@ -28,6 +30,14 @@ export const routes: RouteObject[] = [
       {
         path: DEFAULT_ROUTES.PRIVATE.PRODUCT_NEW,
         element: <NewProduct />
+      },
+      {
+        path: DEFAULT_ROUTES.PRIVATE.PRODUCT_EDIT,
+        element: <EditProduct />
+      },
+      {
+        path: DEFAULT_ROUTES.PRIVATE.PRODUCT_DETAILS,
+        element: <DetailProduct />
       }
     ]
   },
