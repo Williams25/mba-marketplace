@@ -13,7 +13,7 @@ export const NewProduct = () => {
         </span>
       </div>
 
-      <FormProduct status="sold" />
+      <FormProduct />
     </>
   );
 };
