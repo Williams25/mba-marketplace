@@ -5,6 +5,9 @@ export const DEFAULT_ROUTES = {
   },
   PRIVATE: {
     HOME: "/",
-    PRODUCTS: "/products"
+    PRODUCTS: "/products",
+    PRODUCT_NEW: "/products/new",
+    PRODUCT_EDIT: "/products/edit/:id",
+    PRODUCT_DETAILS: "/products/details/:id"
   }
 };
