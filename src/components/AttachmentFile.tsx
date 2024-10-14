@@ -11,6 +11,7 @@ export interface IAttachmentFileProps {
   classNameLabel?: string;
   error?: string;
   image?: string | null;
+  disabled?: boolean;
 }
 
 export const AttachmentFile = ({
@@ -18,7 +19,8 @@ export const AttachmentFile = ({
   className = "",
   classNameLabel = "",
   error,
-  image
+  image,
+  disabled
 }: IAttachmentFileProps) => {
   const [filePreview, setFilePreview] = useState<string | null>(image || null);
   const [isUploadingFile, setIsUploadingFile] = useState<boolean>(false);
@@ -68,6 +70,7 @@ export const AttachmentFile = ({
                   handleSaveAvatar(e.target.files, field.onChange);
                 }}
                 className="hidden"
+                disabled={disabled}
               />
 
               {!filePreview && !isUploadingFile && (
