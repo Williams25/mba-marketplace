@@ -82,7 +82,15 @@ export const FormProduct = ({ defaultValues, status }: IFormProductProps) => {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: defaultValues?.id
       ? productsService.editProduct
-      : productsService.createProduct
+      : productsService.createProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_ALL_PRODUCTS]
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_AVAILABLE, QUERY_KEYS.GET_SOLD]
+      });
+    }
   });
 
   const handleSaveProduct = async (data: IFormProductData) => {
@@ -95,12 +103,6 @@ export const FormProduct = ({ defaultValues, status }: IFormProductProps) => {
       navigate(
         DEFAULT_ROUTES.PRIVATE.PRODUCT_DETAILS.replace(":id", response.id)
       );
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_SOLD]
-      });
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_AVAILABLE]
-      });
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
 
