@@ -33,9 +33,8 @@ export const Products = () => {
   const { data: products, isLoading: isLoadingProducts } = useQuery({
     queryKey: [QUERY_KEYS.GET_ALL_PRODUCTS, page, status, search],
     queryFn: () =>
-      productsService.allProducts({
-        page,
-        status: status || "available",
+      productsService.productsMe({
+        status: status,
         search
       })
   });
@@ -122,6 +121,11 @@ export const Products = () => {
             products?.map((product) => (
               <ProductCard key={product.id} {...product} />
             ))}
+          {!isLoadingProducts && !products?.length && (
+            <p className="text-red-800 font-semibold text-center mx-auto italic">
+              Nenhum produto na lista :(
+            </p>
+          )}
         </div>
       </div>
     </>
