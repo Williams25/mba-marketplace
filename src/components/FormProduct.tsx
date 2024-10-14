@@ -9,7 +9,7 @@ import { TextareaCustom } from "./TextareaCustom";
 import { SelectCustom } from "./SelectCustom";
 import { QUERY_KEYS } from "@/constants/QueryKeys";
 import { categoryServices } from "@/services/categoryServices";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "./ui/button";
 import { productsService } from "@/services/productsService";
 import { toast } from "sonner";
@@ -77,6 +77,8 @@ export const FormProduct = ({ defaultValues, status }: IFormProductProps) => {
     resolver: zodResolver(schema)
   });
 
+  const queryClient = useQueryClient();
+
   const { mutateAsync, isPending } = useMutation({
     mutationFn: defaultValues?.id
       ? productsService.editProduct
@@ -93,6 +95,12 @@ export const FormProduct = ({ defaultValues, status }: IFormProductProps) => {
       navigate(
         DEFAULT_ROUTES.PRIVATE.PRODUCT_DETAILS.replace(":id", response.id)
       );
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_SOLD]
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_AVAILABLE]
+      });
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
 
