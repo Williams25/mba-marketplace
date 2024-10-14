@@ -25,14 +25,15 @@ export const productsService = {
     return data?.products || [];
   },
   productsMe: async ({
-    search = "",
-    status = "available"
+    search,
+    status
   }: Pick<IProductFilterParams, "search" | "status">) => {
+    const params = { search, status };
+    if (!params.search?.length) delete params.search;
+    if (!params.status?.length) delete params.status;
+
     const { data } = await http.get<IProducts>(`/products/me`, {
-      params: {
-        status,
-        search
-      }
+      params
     });
 
     return data?.products || [];
