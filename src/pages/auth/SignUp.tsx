@@ -126,7 +126,12 @@ export const SignUp = () => {
               Perfil
             </legend>
 
-            <AttachmentFile id="fileAvatar" className="mb-4" />
+            <AttachmentFile
+              id="fileAvatar"
+              className="mb-4"
+              classNameLabel="h-32"
+              disabled={isPending}
+            />
 
             <InputCustom
               label="Nome"
