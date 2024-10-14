@@ -23,6 +23,7 @@ import { parsePriceMultipliedOneHundred } from "@/utils/currencyUtils";
 import { useNavigate } from "react-router-dom";
 import { DEFAULT_ROUTES } from "@/constants/DefaultRoutes";
 import { ERRORS_MESSAGES } from "@/constants/ErrorsMessages";
+import { useMemo } from "react";
 
 const schema = z.object({
   id: z.string().nullish(),
@@ -117,6 +118,10 @@ export const FormProduct = ({ defaultValues, status }: IFormProductProps) => {
 
   const attachmentsIdsWatched = methods.watch("attachmentsIds");
 
+  const isDisabledProductToStatus = useMemo(() => {
+    return status === "cancelled" || status === "sold";
+  }, [status]);
+
   return (
     <FormProviderCustom
       methods={methods}
@@ -128,6 +133,7 @@ export const FormProduct = ({ defaultValues, status }: IFormProductProps) => {
         className="mb-4"
         classNameLabel="max-w-[415px] max-h-[340px] min-h-[340px] min-w-[415px]"
         image={attachmentsIdsWatched ? attachmentsIdsWatched[0]?.url : null}
+        disabled={isPending || isLoadingCategories || isDisabledProductToStatus}
       />
 
       <div className="bg-white px-6 py-8 rounded-md">
@@ -147,7 +153,9 @@ export const FormProduct = ({ defaultValues, status }: IFormProductProps) => {
             id="title"
             placeholder="Nome do produto"
             className="mb-4"
-            disabled={isPending || isLoadingCategories}
+            disabled={
+              isPending || isLoadingCategories || isDisabledProductToStatus
+            }
           />
 
           <InputCustom
@@ -156,7 +164,9 @@ export const FormProduct = ({ defaultValues, status }: IFormProductProps) => {
             placeholder="R$ 0,00"
             className="mb-4"
             mask={currencyMask}
-            disabled={isPending || isLoadingCategories}
+            disabled={
+              isPending || isLoadingCategories || isDisabledProductToStatus
+            }
           />
         </div>
 
@@ -165,7 +175,9 @@ export const FormProduct = ({ defaultValues, status }: IFormProductProps) => {
           id="description"
           placeholder="Escreva detalhes sobre o produto, tamanho, características"
           className="mb-4"
-          disabled={isPending || isLoadingCategories}
+          disabled={
+            isPending || isLoadingCategories || isDisabledProductToStatus
+          }
         />
 
         <SelectCustom
@@ -173,6 +185,9 @@ export const FormProduct = ({ defaultValues, status }: IFormProductProps) => {
           id="categoryId"
           placeholder="Selecione"
           options={categories || []}
+          disabled={
+            isPending || isLoadingCategories || isDisabledProductToStatus
+          }
         />
 
         <div className="mt-8 w-full flex gap-10">
@@ -194,7 +209,11 @@ export const FormProduct = ({ defaultValues, status }: IFormProductProps) => {
           >
             Cancelar
           </Button>
-          <Button type="submit" className="w-full" disabled={isPending}>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isPending || isDisabledProductToStatus}
+          >
             {isPending ? "Publicando produto..." : "Salvar e publicar"}
           </Button>
         </div>
