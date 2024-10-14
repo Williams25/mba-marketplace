@@ -20,6 +20,7 @@ export interface ISelectCustomProps {
   startIcon?: ReactNode;
   endIcon?: ReactNode;
   options?: { label: string; value: string }[];
+  disabled?: boolean;
 }
 
 export const SelectCustom = ({
@@ -29,7 +30,8 @@ export const SelectCustom = ({
   error,
   startIcon,
   placeholder,
-  options
+  options,
+  disabled
 }: ISelectCustomProps) => {
   const [isFocusInput, setIsFocusInput] = useState<boolean>(false);
   const methods = useFormContext();
@@ -69,7 +71,8 @@ export const SelectCustom = ({
                 disabled={
                   field.disabled ||
                   formState.isLoading ||
-                  formState.isSubmitting
+                  formState.isSubmitting ||
+                  disabled
                 }
                 onOpenChange={setIsFocusInput}
               >
